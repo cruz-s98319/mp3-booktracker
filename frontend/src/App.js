@@ -1,23 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import './App.css'; // Ensure this CSS file exists
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="app-container">
+      <header className="app-header">
+        <h1>Welcome to Book Tracker App</h1>
+        <p>Your app is running successfully!</p>
       </header>
+      <main>
+        <button className="primary-button">Get Started</button>
+      </main>
     </div>
   );
 }
