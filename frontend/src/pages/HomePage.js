@@ -1,11 +1,11 @@
-import React from 'react';
-import BookList from '../components/BookList';
+import React from "react";
+import AddBookForm from "../components/AddBookForm";
 
 const HomePage = () => {
     return (
         <div>
-            <h1>Book Tracker</h1>
-            <BookList />
+            <h1>Welcome to the Book Tracker App</h1>
+            <AddBookForm />
         </div>
     );
 };
