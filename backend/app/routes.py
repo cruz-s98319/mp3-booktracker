@@ -1,18 +1,22 @@
-from flask import Blueprint, request, jsonify
-from .models import User, Book
-from . import db
+from flask import Blueprint, jsonify, request
+from .models import User, Book, UserBook, db
 
-main = Blueprint('main', __name__)
+app_bp = Blueprint('app', __name__)
 
-@main.route('/books', methods=['GET'])
+@app_bp.route('/users', methods=['GET'])
+def get_users():
+    users = User.query.all()
+    return jsonify([{ "id": user.id, "username": user.username, "email": user.email } for user in users])
+
+@app_bp.route('/books', methods=['GET'])
 def get_books():
     books = Book.query.all()
-    return jsonify([{'id': book.id, 'title': book.title, 'author': book.author, 'status': book.status} for book in books])
+    return jsonify([{ "id": book.id, "title": book.title, "author": book.author } for book in books])
 
-@main.route('/books', methods=['POST'])
-def add_book():
+@app_bp.route('/add_user', methods=['POST'])
+def add_user():
     data = request.get_json()
-    new_book = Book(title=data['title'], author=data['author'], genre=data['genre'], status=data['status'], user_id=data['user_id'])
-    db.session.add(new_book)
+    new_user = User(username=data['username'], email=data['email'], password=data['password'])
+    db.session.add(new_user)
     db.session.commit()
-    return jsonify({'message': 'Book added successfully!'})
+    return jsonify({ "message": "User added successfully!" })
