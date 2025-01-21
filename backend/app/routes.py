@@ -1,22 +1,40 @@
-from flask import Blueprint, jsonify, request
-from .models import User, Book, UserBook, db
+from flask import Blueprint, request, jsonify
+from app.models import db, Book
+from flask_cors import cross_origin
 
-app_bp = Blueprint('app', __name__)
+app_bp = Blueprint('app_bp', __name__)
 
-@app_bp.route('/users', methods=['GET'])
-def get_users():
-    users = User.query.all()
-    return jsonify([{ "id": user.id, "username": user.username, "email": user.email } for user in users])
+@app_bp.route('/books', methods=['POST'])
+@cross_origin(origin='http://localhost:3000')
 
-@app_bp.route('/books', methods=['GET'])
-def get_books():
-    books = Book.query.all()
-    return jsonify([{ "id": book.id, "title": book.title, "author": book.author } for book in books])
-
-@app_bp.route('/add_user', methods=['POST'])
-def add_user():
+def add_book():
     data = request.get_json()
-    new_user = User(username=data['username'], email=data['email'], password=data['password'])
-    db.session.add(new_user)
+
+    # Extract book details from the request
+    title = data.get('title')
+    author = data.get('author')
+    genre = data.get('genre')
+    published_date = data.get('published_date')
+
+    # Validate input
+    if not title or not author:
+        return jsonify({'error': 'Title and author are required.'}), 400
+
+    # Create a new book instance
+    new_book = Book(
+        title=title,
+        author=author,
+        genre=genre,
+        published_date=published_date
+    )
+
+    # Add the new book to the database
+    db.session.add(new_book)
     db.session.commit()
-    return jsonify({ "message": "User added successfully!" })
+
+    return jsonify({'message': 'Book added successfully!', 'book': {
+        'title': title,
+        'author': author,
+        'genre': genre,
+        'published_date': published_date
+    }}), 201

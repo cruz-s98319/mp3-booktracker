@@ -1,24 +1,23 @@
-import React from 'react';
-import './App.css';
+import React, { useState } from "react";
+import AddBookForm from "./components/AddBookForm";
 
-function App() {
-  const handleButtonClick = () => {
-    alert('Get Started button clicked!');
-  };
+const App = () => {
+    const [showForm, setShowForm] = useState(false);
 
-  return (
-    <div className="app-container">
-      <header className="app-header">
-        <h1>Welcome to Book Tracker App</h1>
-        <p>Your app is running successfully!</p>
-      </header>
-      <main>
-        <button className="primary-button" onClick={handleButtonClick}>
-          Get Started
-        </button>
-      </main>
-    </div>
-  );
-}
+    const handleGetStarted = () => {
+        setShowForm(true);
+    };
+
+    return (
+        <div>
+            <h1>Welcome to the Book Tracker App</h1>
+            {!showForm ? (
+                <button onClick={handleGetStarted}>Get Started</button>
+            ) : (
+                <AddBookForm />
+            )}
+        </div>
+    );
+};
 
 export default App;
