@@ -40,16 +40,18 @@
 #     }}), 201
 
 from flask import jsonify, request
-from app import app, db
 from app.models import Book
+from app import db
 
-@app.route('/books', methods=['GET'])
+app_bp = Blueprint('app_bp', __name__)
+
+@app_bp.route('/books', methods=['GET'])
 def get_books():
     books = Book.query.all()
     books_data = [{'id': book.id, 'title': book.title, 'author': book.author, 'status': book.status} for book in books]
     return jsonify(books_data)
 
-@app.route('/books', methods=['POST'])
+@app_bp.route('/books', methods=['POST'])
 def add_book():
     data = request.json
     new_book = Book(title=data['title'], author=data['author'], status='Reading')
@@ -57,7 +59,7 @@ def add_book():
     db.session.commit()
     return jsonify({'id': new_book.id, 'title': new_book.title, 'author': new_book.author, 'status': new_book.status}), 201
 
-@app.route('/books/<int:book_id>', methods=['PUT'])
+@app_bp.route('/books/<int:book_id>', methods=['PUT'])
 def update_book_status(book_id):
     data = request.json
     book = Book.query.get(book_id)

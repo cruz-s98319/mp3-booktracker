@@ -10,9 +10,9 @@ from app import db
 class Book(db.Model):
     __tablename__ = 'books'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255), nullable=False)
-    author = db.Column(db.String(255), nullable=False)
-    genre = db.Column(db.String(100), nullable=True)
+    title = db.Column(db.String(100), nullable=False)
+    author = db.Column(db.String(100), nullable=False)
+    status = db.Column(db.String(20), default='Reading')
     # published_date = db.Column(db.Date, nullable=True)
 
 # class UserBook(db.Model):
