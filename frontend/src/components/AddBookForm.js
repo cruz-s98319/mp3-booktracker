@@ -62,7 +62,7 @@ const AddBookForm = () => {
                         onChange={handleChange}
                     />
                 </div>
-                <div>
+                {/* <div>
                     <label>Published Date:</label>
                     <input
                         type="date"
@@ -70,7 +70,7 @@ const AddBookForm = () => {
                         value={formData.published_date}
                         onChange={handleChange}
                     />
-                </div>
+                </div> */}
                 <button type="submit">Add Book</button>
             </form>
         </div>

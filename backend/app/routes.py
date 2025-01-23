@@ -14,7 +14,7 @@ def add_book():
     title = data.get('title')
     author = data.get('author')
     genre = data.get('genre')
-    published_date = data.get('published_date')
+    # published_date = data.get('published_date')
 
     # Validate input
     if not title or not author:
@@ -25,7 +25,7 @@ def add_book():
         title=title,
         author=author,
         genre=genre,
-        published_date=published_date
+        # published_date=published_date
     )
 
     # Add the new book to the database
@@ -36,5 +36,5 @@ def add_book():
         'title': title,
         'author': author,
         'genre': genre,
-        'published_date': published_date
+        # 'published_date': published_date
     }}), 201
