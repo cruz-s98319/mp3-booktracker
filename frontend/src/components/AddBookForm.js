@@ -1,80 +1,58 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-const AddBookForm = () => {
-    const [formData, setFormData] = useState({
-        title: "",
-        author: "",
-        genre: "",
-        // status: "",
-    });
+const AddBookForm = ({ fetchBooks }) => {
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [genre, setGenre] = useState(''); 
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5000/books', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, author, genre }), 
+      });
 
-        // Send book data to the backend
-        fetch("http://localhost:5000/books", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                alert(data.message || "Book added successfully!");
-                setFormData({ title: "", author: "", genre: ""});
-            })
-            .catch((err) => console.error("Error adding book:", err));        
-    };
+      if (response.ok) {
+        fetchBooks(); 
+        setTitle('');
+        setAuthor('');
+        setGenre(''); 
+      } else {
+        console.error('Failed to add book');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
-    return (
-        <div>
-            <h2>Add a New Book</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Title:</label>
-                    <input
-                        type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Author:</label>
-                    <input
-                        type="text"
-                        name="author"
-                        value={formData.author}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Genre:</label>
-                    <input
-                        type="text"
-                        name="genre"
-                        value={formData.genre}
-                        onChange={handleChange}
-                    />
-                </div>
-                {/* <div>
-                    <label>Published Date:</label>
-                    <input
-                        type="date"
-                        name="published_date"
-                        value={formData.published_date}
-                        onChange={handleChange}
-                    />
-                </div> */}
-                <button type="submit">Add Book</button>
-            </form>
-        </div>
-    );
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
+      <input
+        type="text"
+        placeholder="Author"
+        value={author}
+        onChange={(e) => setAuthor(e.target.value)}
+        required
+      />
+      <input
+        type="text"
+        placeholder="Genre"
+        value={genre}
+        onChange={(e) => setGenre(e.target.value)}
+      />
+      <button type="submit">Add Book</button>
+    </form>
+  );
 };
 
 export default AddBookForm;
