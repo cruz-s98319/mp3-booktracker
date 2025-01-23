@@ -5,7 +5,7 @@ const AddBookForm = () => {
         title: "",
         author: "",
         genre: "",
-        published_date: "",
+        // status: "",
     });
 
     const handleChange = (e) => {
@@ -24,7 +24,7 @@ const AddBookForm = () => {
             .then((res) => res.json())
             .then((data) => {
                 alert(data.message || "Book added successfully!");
-                setFormData({ title: "", author: "", genre: "", published_date: "" });
+                setFormData({ title: "", author: "", genre: ""});
             })
             .catch((err) => console.error("Error adding book:", err));        
     };

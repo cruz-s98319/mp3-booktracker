@@ -39,7 +39,7 @@
 #         # 'published_date': published_date
 #     }}), 201
 
-from flask import jsonify, request
+from flask import Blueprint, jsonify, request
 from app.models import Book
 from app import db
 
@@ -47,8 +47,15 @@ app_bp = Blueprint('app_bp', __name__)
 
 @app_bp.route('/books', methods=['GET'])
 def get_books():
-    books = Book.query.all()
-    books_data = [{'id': book.id, 'title': book.title, 'author': book.author, 'status': book.status} for book in books]
+    books = Book.query.all()  # Fetch all books from the database
+    books_data = [
+        {
+            'id': book.id,
+            'title': book.title,
+            'author': book.author,
+            'status': book.status
+        } for book in books
+    ]
     return jsonify(books_data)
 
 @app_bp.route('/books', methods=['POST'])
